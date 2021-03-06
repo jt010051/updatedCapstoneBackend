@@ -7,8 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.capstone.domain.Category;
 import com.capstone.domain.Song;
+import com.capstone.domain.UserDetails;
 import com.capstone.repositories.CategoryRepository;
 import com.capstone.repositories.SongRepository;
+import com.capstone.repositories.UserDetailsRepository;
 
 @SpringBootApplication
 public class CapstoneSpringv2Application implements CommandLineRunner {
@@ -22,6 +24,9 @@ public class CapstoneSpringv2Application implements CommandLineRunner {
 	
 	@Autowired
 	CategoryRepository categoryRepo;
+	
+	@Autowired
+	UserDetailsRepository userDetailsRepo;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -115,7 +120,6 @@ public class CapstoneSpringv2Application implements CommandLineRunner {
 		s9.setQuantity(10);
 		s9.setGenre(c4);
 		
-		
 		Song s10 = new Song();
 		s10.setTitle("s10Title");
 		s10.setArtist("s10Artist");
@@ -135,7 +139,38 @@ public class CapstoneSpringv2Application implements CommandLineRunner {
 		songRepo.save(s9);
 		songRepo.save(s10);
 		
-		// list of songs
+		// list of UserDetails
+		
+		UserDetails ud1 = new UserDetails();
+		ud1.setEmail("ud1@gmail.com");
+		ud1.setFirstName("ud1First");
+		ud1.setLastName("ud1Last");
+		ud1.setCreditCardNumber(111111111);
+		ud1.setAddress("111 streets");
+		
+		UserDetails ud2 = new UserDetails();
+		ud2.setEmail("ud2@gmail.com");
+		ud2.setFirstName("ud2First");
+		ud2.setLastName("ud2Last");
+		ud2.setCreditCardNumber(222222222);
+		ud2.setAddress("222 streets");
+		
+		UserDetails ud3 = new UserDetails();
+		ud3.setEmail("ud3@gmail.com");
+		ud3.setFirstName("ud3First");
+		ud3.setLastName("ud3Last");
+		ud3.setCreditCardNumber(333333333);
+		ud3.setAddress("333 streets");
+		
+		userDetailsRepo.save(ud1);
+		userDetailsRepo.save(ud2);
+		userDetailsRepo.save(ud3);
+	
+		
+		
+		
+		
+	
 	}
 
 }
