@@ -19,13 +19,13 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	String title;
-	String artist;
-	double price;
-    int quantity;
+	private String title;
+	private String artist;
+	private double price;
+	private int quantity;
     
     @ManyToOne
     @JoinColumn(name = "category_id")
-    Category genre;
+    private Category genre;
 
 }

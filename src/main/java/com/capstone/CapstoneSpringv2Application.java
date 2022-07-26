@@ -1,24 +1,35 @@
 package com.capstone;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.capstone.domain.Category;
+import com.capstone.domain.Role;
 import com.capstone.domain.Song;
 import com.capstone.domain.UserDetails;
 import com.capstone.repositories.CategoryRepository;
 import com.capstone.repositories.SongRepository;
 import com.capstone.repositories.UserDetailsRepository;
 
+import com.capstone.service.UserService;
+import com.capstone.utils.ConstantUtils;
+
 @SpringBootApplication
-public class CapstoneSpringv2Application implements CommandLineRunner {
+
+public class CapstoneSpringv2Application implements CommandLineRunner{
 
 	public static void main(String[] args) {
 		SpringApplication.run(CapstoneSpringv2Application.class, args);
 	}
-	
+
 	@Autowired
 	SongRepository songRepo;
 	
@@ -28,9 +39,16 @@ public class CapstoneSpringv2Application implements CommandLineRunner {
 	@Autowired
 	UserDetailsRepository userDetailsRepo;
 
-	@Override
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	
+@Override
 	public void run(String... args) throws Exception {
 		initializeCategoryAndSongs();
+		
 	}
 
 	private void initializeCategoryAndSongs() {
@@ -138,39 +156,25 @@ public class CapstoneSpringv2Application implements CommandLineRunner {
 		songRepo.save(s8);
 		songRepo.save(s9);
 		songRepo.save(s10);
-		
-		// list of UserDetails
-		
-		UserDetails ud1 = new UserDetails();
-		ud1.setEmail("ud1@gmail.com");
-		ud1.setFirstName("ud1First");
-		ud1.setLastName("ud1Last");
-		ud1.setCreditCardNumber(111111111);
-		ud1.setAddress("111 streets");
-		
-		UserDetails ud2 = new UserDetails();
-		ud2.setEmail("ud2@gmail.com");
-		ud2.setFirstName("ud2First");
-		ud2.setLastName("ud2Last");
-		ud2.setCreditCardNumber(222222222);
-		ud2.setAddress("222 streets");
-		
-		UserDetails ud3 = new UserDetails();
-		ud3.setEmail("ud3@gmail.com");
-		ud3.setFirstName("ud3First");
-		ud3.setLastName("ud3Last");
-		ud3.setCreditCardNumber(333333333);
-		ud3.setAddress("333 streets");
-		
-		userDetailsRepo.save(ud1);
-		userDetailsRepo.save(ud2);
-		userDetailsRepo.save(ud3);
-	
-		
-		
-		
-		
 	
 	}
 
+	@Bean
+	CommandLineRunner run(UserService userService) {
+		return args -> {
+			userService.saveRole(new Role(null, "ROLE_USER"));
+		
+			userService.saveRole(new Role(null, "ROLE_ADMIN"));
+
+
+			userService.saveUser(new UserDetails(null, "teo", "password",  new ArrayList<>()));
+			userService.saveUser(new UserDetails(null, "holly", "password", new ArrayList<>()));
+			
+
+			userService.addRoleToUser("holly", "ROLE_USER");
+
+			userService.addRoleToUser("teo", "ROLE_ADMIN");
+		
+		};
+	}
 }
